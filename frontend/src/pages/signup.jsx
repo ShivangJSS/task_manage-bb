@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import API from "../api";
+import "../styles/auth.css";
 
 function Signup() {
 
@@ -15,12 +16,21 @@ function Signup() {
 
     try {
 
-      await API.post("/auth/signup", {
+      console.log({
         name,
         email,
         password,
         role
       });
+
+      const res = await API.post("/auth/signup", {
+        name,
+        email,
+        password,
+        role
+      });
+
+      console.log(res.data);
 
       alert("Signup successful");
 
@@ -28,55 +38,71 @@ function Signup() {
 
     } catch (err) {
 
-      alert(err.response?.data?.msg || "Signup failed");
+      console.log(err);
 
+      alert(
+        err.response?.data?.msg ||
+        err.response?.data?.error ||
+        "Signup failed"
+      );
     }
   };
 
   return (
-    <div style={{ padding: "40px" }}>
+    <div className="auth-container">
 
-      <h2>Signup</h2>
+      <div className="auth-card">
 
-      <input
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
+        <h2 className="auth-title">
+          Create Account
+        </h2>
 
-      <br /><br />
+        <input
+          type="text"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="auth-input"
+        />
 
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="auth-input"
+        />
 
-      <br /><br />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="auth-input"
+        />
 
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
+        <select
+          value={role}
+          onChange={(e) => setRole(e.target.value)}
+          className="auth-input"
+        >
+          <option value="Member">Member</option>
+          <option value="Admin">Admin</option>
+        </select>
 
-      <br /><br />
+        <button
+          onClick={handleSignup}
+          className="auth-button"
+        >
+          Signup
+        </button>
 
-      <select
-        value={role}
-        onChange={(e) => setRole(e.target.value)}
-      >
-        <option value="Member">Member</option>
-        <option value="Admin">Admin</option>
-      </select>
+        <p className="auth-footer">
+          Already have an account?
+          <Link to="/"> Login</Link>
+        </p>
 
-      <br /><br />
-
-      <button onClick={handleSignup}>
-        Signup
-      </button>
+      </div>
 
     </div>
   );

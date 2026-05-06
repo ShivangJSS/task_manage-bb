@@ -1,6 +1,6 @@
 const Project = require("../models/Project");
 
-// 🔹 Create Project (Admin only)
+
 exports.createProject = async (req, res) => {
   try {
     const { name } = req.body;
@@ -19,7 +19,7 @@ exports.createProject = async (req, res) => {
   }
 };
 
-// 🔹 Get all projects (for logged user)
+
 exports.getProjects = async (req, res) => {
   try {
     const projects = await Project.find({
@@ -32,7 +32,7 @@ exports.getProjects = async (req, res) => {
   }
 };
 
-// 🔹 Add member to project (Admin only)
+
 exports.addMember = async (req, res) => {
   try {
     const { userId } = req.body;
@@ -43,7 +43,7 @@ exports.addMember = async (req, res) => {
       return res.status(404).json({ msg: "Project not found" });
     }
 
-    // avoid duplicates
+
     if (!project.members.includes(userId)) {
       project.members.push(userId);
     }

@@ -1,6 +1,6 @@
 const Task = require("../models/Task");
 
-// 🔹 Create Task (Admin)
+
 exports.createTask = async (req, res) => {
   try {
     const { title, description, assignedTo, projectId, dueDate } = req.body;
@@ -21,7 +21,7 @@ exports.createTask = async (req, res) => {
   }
 };
 
-// 🔹 Get Tasks (for logged-in user)
+
 exports.getTasks = async (req, res) => {
   try {
     const tasks = await Task.find({

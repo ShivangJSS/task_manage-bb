@@ -1,19 +1,25 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import API from "../api";
+import "../styles/auth.css";
 
 function Login() {
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
 
   const handleLogin = async () => {
+
     try {
+
       const res = await API.post("/auth/login", {
         email,
         password
       });
+
+      console.log(res.data);
 
       localStorage.setItem("token", res.data.token);
 
@@ -22,33 +28,56 @@ function Login() {
       navigate("/dashboard");
 
     } catch (err) {
-      alert(err.response?.data?.msg || "Login failed");
+
+      console.log(err);
+
+      alert(
+        err.response?.data?.msg ||
+        err.response?.data?.error ||
+        "Login failed"
+      );
     }
   };
 
   return (
-    <div style={{ padding: 40 }}>
-      <h2>Login</h2>
+    <div className="auth-container">
 
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
+      <div className="auth-card">
 
-      <br /><br />
+        <h2 className="auth-title">
+          Team Task Manager
+        </h2>
 
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="auth-input"
+        />
 
-      <br /><br />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="auth-input"
+        />
 
-      <button onClick={handleLogin}>Login</button>
+        <button
+          onClick={handleLogin}
+          className="auth-button"
+        >
+          Login
+        </button>
+
+        <p className="auth-footer">
+          Don't have an account?
+          <Link to="/signup"> Signup</Link>
+        </p>
+
+      </div>
+
     </div>
   );
 }
